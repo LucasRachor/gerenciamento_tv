@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id            String    @id @default(cuid())
+  nomeDeUsuario String    @unique
+  nomeCompleto  String
+  email         String    @unique
+  senha         String
+  role          Role      @default(user)
+  criadoEm      DateTime  @default(now())
+  atualizadoEm  DateTime?
+
+  @@map("usuarios")
+}
+
+model Clientes {
+  id           String   @id @default(cuid())
+  nomeCompleto String
+  email        String   @unique
+  telefone     String   @unique
+  genero       String
+  endereco     Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  enderecoId   String   @unique
+
+  @@map("clientes")
+}
+
+model Endereco {
+  id       String    @id @default(cuid())
+  cep      String
+  rua      String
+  bairro   String
+  cidade   String
+  estado   String
+  clientes Clientes?
+
+  @@map("enderecos")
+}
+
+enum Role {
+  user
+  admin
+}

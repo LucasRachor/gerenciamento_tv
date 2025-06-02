@@ -2,8 +2,9 @@
   "name": "gerenciamento_iptv",
   "version": "1.0.0",
   "description": "Projeto MVP para gerenciamento de clientes",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start:dev": "nodemon ./src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/LucasRachor/gerenciamento_tv/issues"
   },
-  "homepage": "https://github.com/LucasRachor/gerenciamento_tv#readme"
+  "homepage": "https://github.com/LucasRachor/gerenciamento_tv#readme",
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.8.2"
+  }
 }
