@@ -1,19 +1,17 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 class Login {
-    constructor(userRepository, tokenService) {
-        this.userRepository = userRepository,
-            this.tokenService = tokenService
-    }
+    constructor(authRepository) { this.authRepository = authRepository }
 
-    async execute({ nomeDeUsuario, senha }) {
-        const usuario = await this.userRepository.listarComNome(nomeDeUsuario);
+    async execute({ email, senha }) {
+        const usuario = await this.authRepository.listarComEmail(email);
 
-        if (!usuario || !await bcrypt.compare(usuario.senha, senha)) {
-            throw new Error('Nome de usuario ou senha incorreto!')
+        if (!usuario || !await bcrypt.compare(senha, usuario.senha)) {
+            throw new Error('Email ou senha incorretos!')
         }
 
-        return await this.tokenService.gerarToken({ id: usuario.id, role: usuario.role })
+        return jwt.sign({ id: usuario.id, role: usuario.role }, process.env.JWT_SECRET, { expiresIn: '24h' })
 
     }
 }

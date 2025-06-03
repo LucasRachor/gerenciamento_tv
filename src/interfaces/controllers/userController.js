@@ -1,7 +1,8 @@
 class UserController {
-    constructor({ CriarUsuario, ListarUsuario }) {
+    constructor({ CriarUsuario, ListarUsuario, Login }) {
         this.criarUsuario = CriarUsuario;
         this.listarUsuario = ListarUsuario;
+        this.loginUsuario = Login;
     }
 
     async criar(req, res) {

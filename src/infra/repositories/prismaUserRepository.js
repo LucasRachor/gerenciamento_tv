@@ -1,20 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
+const gerarSalt = require('../../libs/gerarSalt')
+const UserRepository = require('../../domain/repositories/userRepository')
 const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
-const gerarSalt = require('../../../libs/gerarSalt')
-const UserRepository = require('../../../domain/repositories/User/UserRepository')
 
 class PrismaUserRepository extends UserRepository {
-
-    async listarComNome(nomeDeUsuario) {
-        try {
-            return await prisma.usuario.findUnique({
-                where: { nomeDeUsuario }
-            })
-        } catch (error) {
-            throw Error('Erro interno do servidor')
-        }
-    }
 
     async criarUsuario(usuarioData) {
         try {
@@ -30,9 +20,9 @@ class PrismaUserRepository extends UserRepository {
             if (error.code === 'P2002') {
                 throw Error('Campos duplicados existentes!')
             }
+            console.log(error)
             throw Error('Erro interno do servidor')
         }
-
     }
 
     async listarUsuarios() {
@@ -51,6 +41,19 @@ class PrismaUserRepository extends UserRepository {
             });
         } catch (error) {
             throw new Error('Erro ao listar usuarios')
+        }
+    }
+
+    async listarComEmail(email) {
+        try {
+            return await prisma.usuario.findUnique({
+                where: {
+                    email: email
+                }
+            })
+        } catch (error) {
+            console.log(error)
+            throw Error('Erro interno do servidor')
         }
     }
 }
