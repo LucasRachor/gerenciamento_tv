@@ -22,6 +22,42 @@ class AuthController {
             })
         }
     }
+
+    async verificar(req, res) {
+        try {
+            const token = req.headers?.authorization?.split(" ")[1];
+
+            if (token === undefined || token === '') {
+
+                res.status(400).json({
+                    error: "Token ausente da requisição"
+                })
+
+            }
+
+            const verificar = await this.verificarToken.execute(token);
+
+            if (!verificar) {
+                throw new Error('Token inválido!')
+            }
+
+            res.status(200).json(verificar)
+
+        } catch (error) {
+
+            if (error instanceof Error) {
+                res.status(409).json({
+                    error: "Token inválido"
+                })
+            }
+
+            console.log(error)
+            res.status(500).json({
+                error: "Erro interno do servidor"
+            })
+        }
+    }
+
 }
 
 module.exports = AuthController;

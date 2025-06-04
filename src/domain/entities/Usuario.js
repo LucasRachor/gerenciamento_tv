@@ -1,4 +1,4 @@
-class User {
+class Usuario {
     constructor({ nomeDeUsuario, nomeCompleto, email, senha }) {
         if (!nomeDeUsuario) throw new Error("O campo Nome de Usuario não pode ficar em branco")
         if (!email) throw new Error("O campo email não pode ficar em branco")
@@ -10,4 +10,4 @@ class User {
     }
 }
 
-module.exports = User;
+module.exports = Usuario;

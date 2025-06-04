@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -14,33 +13,59 @@ model Usuario {
   nomeCompleto  String
   email         String    @unique
   senha         String
+  codigoSenha   String    @default("")
+  status        String    @default("pendente")
   role          Role      @default(user)
   criadoEm      DateTime  @default(now())
   atualizadoEm  DateTime?
+  Cliente       Cliente[]
 
   @@map("usuarios")
 }
 
-model Clientes {
-  id           String   @id @default(cuid())
+model Tv {
+  id           String       @id @default(cuid())
+  nome         String
+  descricao    String
+  clientes_tvs Cliente_Tv[]
+
+  @@map("tvs")
+}
+
+model Cliente {
+  id           String       @id @default(cuid())
   nomeCompleto String
-  email        String   @unique
-  telefone     String   @unique
+  email        String       @unique
+  telefone     String       @unique
   genero       String
-  endereco     Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
-  enderecoId   String   @unique
+  pagamento    Boolean      @default(false)
+  usuario      Usuario      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId    String
+  endereco     Endereco?
+  clientes_tvs Cliente_Tv[]
 
   @@map("clientes")
 }
 
+model Cliente_Tv {
+  id        String  @id @default(cuid())
+  cliente   Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  clienteId String
+  tv        Tv      @relation(fields: [tvId], references: [id], onDelete: Cascade)
+  tvId      String
+
+  @@map("clientes_tvs")
+}
+
 model Endereco {
-  id       String    @id @default(cuid())
-  cep      String
-  rua      String
-  bairro   String
-  cidade   String
-  estado   String
-  clientes Clientes?
+  id        String  @id @default(cuid())
+  cep       String
+  rua       String
+  bairro    String
+  cidade    String
+  estado    String
+  cliente   Cliente @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  clienteId String  @unique @default("")
 
   @@map("enderecos")
 }
