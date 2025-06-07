@@ -1,4 +1,4 @@
-class UserRepository {
+class UsuarioRepository {
 
     async criarUsuario(payload) {
         throw new Error("contratado!")
@@ -18,4 +18,4 @@ class UserRepository {
 
 }
 
-module.exports = UserRepository;
+module.exports = UsuarioRepository;

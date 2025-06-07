@@ -12,7 +12,7 @@ class PrismaUserRepository extends UserRepository {
             return await prisma.usuario.create({
                 data: {
                     ...payload,
-                    senha: await bcrypt.hash(usuarioData.senha, salt)
+                    senha: await bcrypt.hash(payload.senha, salt)
                 }
             })
 

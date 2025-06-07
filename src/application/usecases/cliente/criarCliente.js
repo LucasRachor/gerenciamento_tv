@@ -1,13 +1,13 @@
 const Cliente = require('../../../domain/entities/Cliente')
 
 class CriarCliente {
-    constructor(userRepository) {
-        this.userRepository = userRepository;
+    constructor(clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     async execute(payload, usuarioId) {
         const cliente = new Cliente(payload)
-        return await this.userRepository.criarCliente(cliente, usuarioId);
+        return await this.clienteRepository.criarCliente(cliente, usuarioId);
     }
 
 }
