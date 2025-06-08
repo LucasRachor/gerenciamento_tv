@@ -55,6 +55,7 @@ model Cliente_Tv {
   tv        Tv      @relation(fields: [tvId], references: [id], onDelete: Cascade)
   tvId      String
 
+  @@unique([clienteId, tvId])
   @@map("clientes_tvs")
 }
 

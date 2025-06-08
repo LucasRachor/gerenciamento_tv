@@ -60,6 +60,89 @@ class PrismaTvRepository extends TvRepository {
 
     }
 
+    async vincularTv(clienteId, tvId) {
+
+        try {
+
+            return await prisma.cliente_Tv.create({
+                data: {
+                    cliente: {
+                        connect: {
+                            id: clienteId
+                        }
+                    },
+                    tv: {
+                        connect: {
+                            id: tvId
+                        }
+                    }
+                }
+            })
+
+        } catch (error) {
+            console.log(error);
+
+            if (error.code === 'P2002') {
+                throw new Error('Cliente já vinculado à esta Tv!')
+            }
+
+            throw new Error('Erro ao vincular Tvs');
+
+        }
+
+    }
+
+    async listarClientesTvs(usuarioId) {
+
+        try {
+            const tvs = await prisma.tv.findMany({
+                select: {
+                    id: true,
+                    nome: true,
+                    clientes_tvs: {
+                        where: {
+                            cliente: {
+                                usuarioId: usuarioId
+                            }
+                        },
+                        select: {
+                            cliente: {
+                                select: {
+                                    id: true,
+                                    nomeCompleto: true,
+                                    email: true,
+                                    telefone: true,
+                                    pagamento: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const respostaFormatada = tvs.map(tvs => {
+                return {
+                    id: tvs.id,
+                    nome: tvs.nome,
+                    clientes: tvs.clientes_tvs.map(clientes => {
+                        return {
+                            id: clientes.cliente.id,
+                            nome: clientes.cliente.nomeCompleto,
+                            email: clientes.cliente.email,
+                            telefone: clientes.cliente.telefone,
+                            pagamento: clientes.cliente.pagamento
+                        }
+                    })
+                }
+            })
+
+            return respostaFormatada;
+
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
 
 }
 
