@@ -11,8 +11,8 @@ class Login {
             throw new Error('Email ou senha incorretos!')
         }
 
-        return this.tokenService.gerarToken({ id: usuario.id, role: usuario.role });
-        
+        return this.tokenService.gerarToken({ id: usuario.id, nome: usuario.nomeCompleto, role: usuario.role });
+
     }
 }
 

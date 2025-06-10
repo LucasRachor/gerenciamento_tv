@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+const cors = require('cors');
 
 const usuarioRoutes = require("./interfaces/routes/usuarioRoutes");
 const authRoutes = require("./interfaces/routes/authRoutes");
@@ -11,6 +12,9 @@ const app = express();
 const PORT = process.env.PORT;
 const versaoApi = "api/v1";
 app.use(express.json());
+app.use(cors({
+    origin: '*'
+}));
 
 app.use(`/${versaoApi}/auth`, authRoutes);
 app.use(`/${versaoApi}/usuarios`, usuarioRoutes);

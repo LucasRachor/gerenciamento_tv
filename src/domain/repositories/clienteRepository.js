@@ -16,6 +16,10 @@ class ClienteRepository {
         throw new Error('contratado!')
     }
 
+    async listarInformacoes(usuarioId) {
+        throw new Error('contratado!')
+    }
+
 }
 
 module.exports = ClienteRepository;

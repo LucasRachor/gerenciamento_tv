@@ -9,6 +9,7 @@ class AuthController {
 
     async login(req, res) {
         try {
+
             const token = await this.authLogin.execute(req.body);
 
             if (token) {

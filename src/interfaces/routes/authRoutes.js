@@ -16,6 +16,6 @@ const authController = new AuthController({
 })
 
 router.post('/login', (req, res) => authController.login(req, res));
-router.get('/', (req, res) => authController.verificar(req, res));
+router.get('/verificar', (req, res) => authController.verificar(req, res));
 
 module.exports = router; 

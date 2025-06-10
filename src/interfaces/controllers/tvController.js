@@ -130,11 +130,28 @@ class TvController {
 
     async listarClientes(req, res) {
 
-        const usuarioId = req.usuarioId;
+        try {
 
-        const clientes = await this.listarClientesTvs.execute(usuarioId);
+            const usuarioId = req.usuarioId;
+            const clientes = await this.listarClientesTvs.execute(usuarioId);
 
-        res.status(200).json(clientes);
+            if (clientes.length <= 0) {
+                res.status(400).json({
+                    error: "Nenhum cliente encontrado!"
+                })
+            }
+
+            res.status(200).json(clientes);
+
+        } catch (error) {
+
+            console.log(error);
+
+            res.status(500).json({
+                error: "Erro interno do servidor!"
+            })
+
+        }
 
     }
 

@@ -1,10 +1,11 @@
 
 class ClientController {
-    constructor({ CriarCliente, ListarClientes, ExcluirCliente, EditarCliente }) {
+    constructor({ CriarCliente, ListarClientes, ExcluirCliente, EditarCliente , ListarInformacoes}) {
         this.criarCliente = CriarCliente;
         this.listarClientes = ListarClientes;
         this.excluirCliente = ExcluirCliente;
         this.editarCliente = EditarCliente;
+        this.listarInformacoes = ListarInformacoes;
     }
 
     async criar(req, res) {
@@ -121,6 +122,24 @@ class ClientController {
         }
     }
 
+    async listarInfo(req, res) {
+
+        try {
+         
+            const usuarioId = req.usuarioId;
+        const infos = await this.listarInformacoes.execute(usuarioId);
+
+        res.status(200).json(infos);
+
+        } catch (error) {
+
+            console.log(error)
+
+            res.status(400).json(error)
+            
+        }
+
+    }
 
 }
 

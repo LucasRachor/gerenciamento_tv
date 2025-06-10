@@ -59,6 +59,7 @@ class PrismaClienteRepository extends ClienteRepository {
                     email: true,
                     telefone: true,
                     genero: true,
+                    statusPagamento: true,
                     pagamento: true,
                     endereco: {
                         select: {
@@ -112,6 +113,7 @@ class PrismaClienteRepository extends ClienteRepository {
                     ...payload
                 }
             })
+
         } catch (error) {
             console.log(error)
 
@@ -124,6 +126,45 @@ class PrismaClienteRepository extends ClienteRepository {
 
             throw new Error("Erro ao editar usuario")
         }
+    }
+
+    async listarInformacoes(usuarioId) {
+
+        try {
+            const total = await prisma.cliente.aggregate({
+                where: {
+                    usuarioId: usuarioId
+                },
+                _count: {
+                    id: true
+                }
+            });
+
+            const totaisPago = await prisma.cliente.aggregate({
+                where: {
+                    usuarioId: usuarioId,
+                    statusPagamento: true,
+                },
+                _count: {
+                    id: true
+                }
+            });
+
+            const resposta = {
+                total: total._count.id,
+                totaisPago: totaisPago._count.id,
+                totaisPendente: total._count.id - totaisPago._count.id
+            }
+
+            return resposta;
+
+        } catch (error) {
+
+            console.log(error);
+            throw new Error(error)
+
+        }
+
     }
 
 }

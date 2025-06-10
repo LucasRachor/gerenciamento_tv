@@ -112,6 +112,7 @@ class PrismaTvRepository extends TvRepository {
                                     nomeCompleto: true,
                                     email: true,
                                     telefone: true,
+                                    statusPagamento: true,
                                     pagamento: true
                                 }
                             }
@@ -120,26 +121,29 @@ class PrismaTvRepository extends TvRepository {
                 }
             });
 
-            const respostaFormatada = tvs.map(tvs => {
-                return {
-                    id: tvs.id,
-                    nome: tvs.nome,
-                    clientes: tvs.clientes_tvs.map(clientes => {
-                        return {
-                            id: clientes.cliente.id,
-                            nome: clientes.cliente.nomeCompleto,
-                            email: clientes.cliente.email,
-                            telefone: clientes.cliente.telefone,
-                            pagamento: clientes.cliente.pagamento
-                        }
-                    })
-                }
-            })
+            const respostaFormatada = tvs
+                .filter(tv => tv.clientes_tvs.length > 0)
+                .map(tv => ({
+                    id: tv.id,
+                    nome: tv.nome,
+                    clientes: tv.clientes_tvs.map(clientes => ({
+                        id: clientes.cliente.id,
+                        nome: clientes.cliente.nomeCompleto,
+                        email: clientes.cliente.email,
+                        telefone: clientes.cliente.telefone,
+                        statusPagamento: clientes.cliente.statusPagamento,
+                        pagamento: clientes.cliente.pagamento
+                    }))
+                }));
+
 
             return respostaFormatada;
 
         } catch (error) {
             console.log(error);
+
+            throw new Error('Erro ao retornar clientes!')
+
         }
 
     }
