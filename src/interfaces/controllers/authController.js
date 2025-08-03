@@ -13,7 +13,7 @@ class AuthController {
             const token = await this.authLogin.execute(req.body);
 
             if (token) {
-                res.status(200).json({ token })
+                res.status(200).json(token)
             }
 
         } catch (error) {

@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 class Login {
     constructor(authRepository, tokenService) { this.authRepository = authRepository, this.tokenService = tokenService }
@@ -11,8 +10,12 @@ class Login {
             throw new Error('Email ou senha incorretos!')
         }
 
-        return this.tokenService.gerarToken({ id: usuario.id, nome: usuario.nomeCompleto, role: usuario.role });
+        const token = this.tokenService.gerarToken({ id: usuario.id, nome: usuario.nomeCompleto, role: usuario.role });
 
+        return {
+            token,
+            nome: usuario.nomeCompleto
+        }
     }
 }
 

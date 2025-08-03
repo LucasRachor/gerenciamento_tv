@@ -110,7 +110,12 @@ class PrismaClienteRepository extends ClienteRepository {
                     id: clienteId
                 },
                 data: {
-                    ...payload
+                    ...payload,
+                    endereco: {
+                        update: {
+                            ...payload.endereco
+                        }
+                    }
                 }
             })
 
